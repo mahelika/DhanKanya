@@ -170,21 +170,23 @@ def templates_page(client):
 
 def expense_tracker_page():
     # App Title
-    st.title("Savings Tracker with Progress Bar")
+    st.title("Business Savings Goal Tracker")
 
     # Sidebar inputs
     st.header("Enter Your Savings Details")
     current_savings = st.number_input("Savings so far ($):", min_value=0.0, step=1.0, value=0.0)
     target_amount = st.number_input("Target amount ($):", min_value=1.0, step=1.0, value=1000.0)
+    monthly_target = st.number_input("Monthly Target ($):", min_value=0.0, step=1.0, value=100.0)
 
     # Calculate progress
-    remaining_amount = max(target_amount - current_savings, 0)
-    progress_percentage = min(current_savings / target_amount, 1.0) if target_amount > 0 else 0.0
+    remaining_amount = max(monthly_target - current_savings, 0)
+    progress_percentage = min(current_savings / monthly_target, 1.0) if monthly_target > 0 else 0.0
 
     # Display summary
     st.subheader("Savings Summary")
     st.write(f"**Current Savings:** ${current_savings:,.2f}")
     st.write(f"**Target Amount:** ${target_amount:,.2f}")
+    st.write(f"**Monthly Target Amount:** ${monthly_target:,.2f}")
     st.write(f"**Remaining Amount:** ${remaining_amount:,.2f}")
 
     # Progress bar (custom UI tracking bar)
