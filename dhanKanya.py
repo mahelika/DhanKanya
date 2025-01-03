@@ -169,6 +169,42 @@ def templates_page(client):
     logger.info(f"User selected state: {selected_state}")
 
 def expense_tracker_page():
+    # App Title
+    st.title("Savings Tracker with Progress Bar")
+
+    # Sidebar inputs
+    st.header("Enter Your Savings Details")
+    current_savings = st.number_input("Savings so far ($):", min_value=0.0, step=1.0, value=0.0)
+    target_amount = st.number_input("Target amount ($):", min_value=1.0, step=1.0, value=1000.0)
+
+    # Calculate progress
+    remaining_amount = max(target_amount - current_savings, 0)
+    progress_percentage = min(current_savings / target_amount, 1.0) if target_amount > 0 else 0.0
+
+    # Display summary
+    st.subheader("Savings Summary")
+    st.write(f"**Current Savings:** ${current_savings:,.2f}")
+    st.write(f"**Target Amount:** ${target_amount:,.2f}")
+    st.write(f"**Remaining Amount:** ${remaining_amount:,.2f}")
+
+    # Progress bar (custom UI tracking bar)
+    st.subheader("Progress Tracker")
+    bar_html = f"""
+    <div style="width: 100%; background-color: #e0e0e0; border-radius: 10px; margin-top: 20px;">
+        <div style="width: {progress_percentage * 100}%; background-color: #4CAF50; height: 30px; border-radius: 10px;"></div>
+    </div>
+    <p style="text-align: center; font-weight: bold;">{progress_percentage * 100:.2f}%</p>
+    """
+    st.markdown(bar_html, unsafe_allow_html=True)
+
+    # Motivational message
+    if progress_percentage >= 1.0:
+        st.success("🎉 Congratulations! You've reached your savings goal!")
+    elif progress_percentage > 0.0:
+        st.info(f"You're {progress_percentage * 100:.2f}% towards your goal. Keep going!")
+    else:
+        st.warning("Let's get started on your savings journey!")
+
     st.title("Expense Tracker")
     
     # Initialize session state attributes if not already initialized
